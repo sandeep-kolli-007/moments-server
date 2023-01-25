@@ -1,0 +1,8 @@
+{
+  "name": "moments",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "69391d4b"
+}
