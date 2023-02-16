@@ -20,9 +20,9 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "bootstrap": "^5.2.3",
-    "node-sass": "npm:sass@^1.26.5",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
+    "node-sass": "npm:sass@^1.26.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
@@ -46,7 +46,7 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"node server/index.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject"
@@ -70,7 +70,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "4.6.2"
+    "@capacitor/cli": "4.6.2",
+    "concurrently": "^7.6.0"
   },
   "description": "An Ionic project"
 }
