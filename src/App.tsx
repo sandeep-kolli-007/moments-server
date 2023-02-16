@@ -1,7 +1,9 @@
-import { Redirect, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import {
   IonApp,
   IonIcon,
+  IonInput,
+  IonItem,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
@@ -9,11 +11,12 @@ import {
   IonTabs,
   setupIonicReact
 } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import io from 'socket.io-client';
+import {Button, Col, Form, Row} from 'react-bootstrap'
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,43 +37,113 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+//
+import './App.scss'
+
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+// const App: React.FC = () => {
+//     const [name, setName] = useState()
+//     const socket = io('http://localhost:3001');
+//     useEffect(() => {
+//      socket.on("connect", () => {
+//       console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+//     });
+//     socket.connect();
+//     }, [])
+    
+   
+//   // socket.emit('set-name', name);
+//   // socket.emit('send-message', { text: "message" });
+//   // socket.on('users-changed',(r)=>{
+//   //   console.log(r.user)
+//   // })
+//   // socket.on('message',(r)=>{
+//   //   console.log(r)
+//   // })
+//   return (
+//    <div>
+//      {/* <IonItem>
+//         <IonLabel>Default label</IonLabel>
+//         <IonInput placeholder="Enter text"></IonInput>
+//       </IonItem> */}
+//       <input type="text" onChange={(e:any)=>{setName(e.target.value)}}/>
+//       <button onClick={()=>{socket.emit('set-name', name);}}>set name</button>
+//    </div>
+//   );
+// };
+
+// export default App;
+
+
+
+ 
+
+const socket = io('http://localhost:3001');
+
+function App() {
+  const [messages, setMessages] = useState<any>([]);
+  const [input, setInput] = useState('');
+  const [sender, setSender] = useState('');
+  const [id, setId] = useState('');
+
+  useEffect(() => {
+    socket.on("connect", () => {
+             console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+             setId(socket.id)
+          });
+    socket.on('chat message', (msg:any) => {
+      setMessages([...messages, msg]);
+    });
+  }, [messages]);
+
+  const handleInput = (e:any) => {
+    setInput(e.target.value);
+  };
+
+  const handleSender = (e:any) => {
+    setSender(e.target.value);
+  };
+
+  const handleSubmit = (e:any) => {
+    
+       e.preventDefault();
+    socket.emit('chat message', { message: input, sender: sender,id:id });
+    setInput('');
+    
+   
+  };
+
+  return (
+  <Row className='app'>
+    <div style={{height:"100vh"}}>
+      
+    
+  <div style={{position: "fixed",width:"100%",
+    bottom: "16px"}}>
+      
+        {messages.map((msg:any, i:number) => (
+          
+      
+      <div className={`chat-bubble-block row  m-0 px-3 ${msg.id === id ?'justify-content-end':"justify-content-start"}`}>
+      <div className='chat-bubble col-6'>
+      <p className='m-0 p-2 text-white' key={i}>{msg.id === id ?"you": "stranger"}: {msg.message}</p>
+      </div>
+      </div>  
+      ))}
+       
+      <Row className='mx-0'>
+         <Col><input className='form-control w-100' type="text" value={input} onChange={handleInput} placeholder="Enter your message" /></Col>
+        <Button  className="col-2 me-2" onClick={(e)=>{handleSubmit(e)}}>Send</Button>
+      </Row>
+   
+ </div>
+        {/* <input type="text" value={sender} onChange={handleSender} placeholder="Enter your name" /> */}
+        
+    
+    </div> 
+    </Row>
+  );
+}
 
 export default App;
