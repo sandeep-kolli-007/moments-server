@@ -4,8 +4,10 @@ import { Plugins } from '@capacitor/core';
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
+//styles
+import './usersList.scss'
 function UsersList() {
-    const socket = io('https://localhost:3001');
+    const socket = io('http://localhost:3001');
   const [present] = useIonToast();
   const { Contacts } = Plugins;
   const [messages, setMessages] = useState<any>([]);
@@ -14,15 +16,19 @@ function UsersList() {
   const [id, setId] = useState('');
   const [showToast, setShowToast] = useState(false);
   useEffect(() => {
-    socket.on("connect", () => {
-             console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-             setId(socket.id)
-          });
+    
     socket.on('chat message', (msg:any) => {
       setMessages([...messages, msg]);
-    });
+    
+   });
   }, [messages]);
 
+  useEffect(()=>{
+    socket.on("connect", () => {
+      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+      setId(socket.id)
+  });
+  },[])
   const handleInput = (e:any) => {
     setInput(e.target.value);
   };
@@ -34,7 +40,7 @@ function UsersList() {
   const handleSubmit = (e:any) => {
     
        e.preventDefault();
-    socket.emit('chat message', { message: input, sender: sender,id:id });
+    socket.emit('chat message', { message: input, sender: "sender",id:id });
     setInput('');
     
    
@@ -79,7 +85,7 @@ function UsersList() {
        
       <Row className='mx-0'>
          <Col>
-         <IonInput className='form-control  w-100' type="text" value={input} onChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
+         <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
         <IonButton  className="w-auto h-auto" size="default" onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
       </Row>
    </div>
