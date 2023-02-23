@@ -36,12 +36,15 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import UsersList from './components/usersList/UsersList';
+import PhoneAuth from './components/phone/PhoneAuth';
 
 setupIonicReact();
 
 const App: React.FC = () => (
    <IonApp>
-  <UsersList/>
+  {/* <UsersList/> */}
+  <h1>hy</h1>
+  <PhoneAuth/>
  </IonApp>
 );
 

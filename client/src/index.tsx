@@ -5,6 +5,9 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -18,12 +21,13 @@ const firebaseConfig = {
   appId: "1:506582725271:web:9bb8ef6ad97fbd3d1b6fd2",
   measurementId: "G-TBWBXHT5HJ"
 };
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+ export const app = firebase.initializeApp(firebaseConfig);
+ const analytics = getAnalytics(app);
+ 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+ 
 );
 
 // If you want your app to work offline and load faster, you can change
@@ -35,4 +39,6 @@ serviceWorkerRegistration.unregister();
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
- 
+
+
+
