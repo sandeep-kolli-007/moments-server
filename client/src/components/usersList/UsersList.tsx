@@ -7,7 +7,7 @@ import { Button, Col, Row } from "react-bootstrap";
 //styles
 import './usersList.scss'
 function UsersList() {
-    const socket = io('http://localhost:3001');
+  const socket = io('http://localhost:3001');
   const [present] = useIonToast();
   const { Contacts } = Plugins;
   const [messages, setMessages] = useState<any>([]);
@@ -16,38 +16,31 @@ function UsersList() {
   const [id, setId] = useState('');
   const [showToast, setShowToast] = useState(false);
   useEffect(() => {
-    
     socket.on('chat message', (msg:any) => {
       setMessages([...messages, msg]);
-    
-   });
+    });
   }, [messages]);
-
+  
   useEffect(()=>{
     socket.on("connect", () => {
       console.log(socket.id); // x8WIv7-mJelg7on_ALbx
       setId(socket.id)
-  });
+    });
   },[])
+  
   const handleInput = (e:any) => {
     setInput(e.target.value);
   };
-
+  
   const handleSender = (e:any) => {
     setSender(e.target.value);
   };
-
+  
   const handleSubmit = (e:any) => {
-    
-       e.preventDefault();
+    e.preventDefault();
     socket.emit('chat message', { message: input, sender: "sender",id:id });
     setInput('');
-    
-   
   };
- 
-
-
   
   const  getContacts=async()=> {
     try {
@@ -66,33 +59,27 @@ function UsersList() {
     });
   };
   return (
-  <Row className='app'>
+    <Row className='app'>
     <div style={{height:"100vh"}}>
-      
-    
-  <div style={{position: "fixed",width:"100%",
+    <div style={{position: "fixed",width:"100%",
     bottom: "16px"}}>
-      
-        {messages.map((msg:any, i:number) => (
-          
-      
+    {messages.map((msg:any, i:number) => (
       <div key={i} className={`chat-bubble-block row  m-0 px-3 ${msg.id === id ?'justify-content-end':"justify-content-start"}`}>
       <div className='chat-bubble col-6'>
       <p className='m-0 p-2 text-white' key={i}>{msg.id === id ?"you": "stranger"}: {msg.message}</p>
       </div>
       </div>  
-      ))}
-       
+      ))} 
+      
       <Row className='mx-0'>
-         <Col>
-         <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
-        <IonButton  className="w-auto h-auto" size="default" onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
+      <Col>
+      <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
+      <IonButton  className="w-auto h-auto" size="default" onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
       </Row>
-   </div>
-   </div>
- 
-    </Row>
-  );
-}
-
-export default UsersList;
+      </div>
+      </div>
+      </Row>
+      );
+    }
+    
+    export default UsersList;

@@ -42,8 +42,6 @@ setupIonicReact();
 
 const App: React.FC = () => (
    <IonApp>
-  {/* <UsersList/> */}
-  <h1>hy</h1>
   <PhoneAuth/>
  </IonApp>
 );

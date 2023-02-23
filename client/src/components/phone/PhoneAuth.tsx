@@ -5,6 +5,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import { PhoneAuthProvider } from '@firebase/auth';
 import firebaseui from 'firebaseui';
+import UsersList from '../usersList/UsersList';
 
 const PhoneAuth = () => {
  
@@ -43,9 +44,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
   return (
     <div>
-      {!phoneNumber&& (
+      {!phoneNumber ? 
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-      )}
+        :
+        <UsersList/>
+      }
     </div>
   );
 };

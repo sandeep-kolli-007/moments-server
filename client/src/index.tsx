@@ -9,6 +9,10 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'react-redux';
+import {store,persistor} from './store';
+import Counter from './components/Counter';
+import { PersistGate } from 'redux-persist/integration/react';
 const container = document.getElementById('root');
 const root = createRoot(container!);
 const firebaseConfig = {
@@ -26,7 +30,14 @@ const firebaseConfig = {
  
 root.render(
   // <React.StrictMode>
-    <App />
+
+  <Provider store={store}>
+     <PersistGate  loading={null} persistor={persistor}>
+
+    {/* <App /> */}
+    <Counter/>
+     </PersistGate>
+  </Provider>
  
 );
 
