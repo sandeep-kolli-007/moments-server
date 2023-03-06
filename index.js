@@ -13,7 +13,7 @@ app.use(function(req, res, next) {
   next();
 });
 // Set up CORS for Socket.io
-io.origins('*:*');
+io.set('origins', '*');
 
 // Handle socket connection
 io.on('connection', (socket) => {
