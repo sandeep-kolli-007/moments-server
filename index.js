@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+ 
 const cors = require('cors')({origin: true});
 const app = require('express')();
 app.use(cors);
@@ -36,4 +36,4 @@ var port = process.env.PORT || 3001;
 server.listen(port, function(){
    console.log('listening in https://moments-node.web.app');
 });
-exports.app = functions.https.onRequest(app);
+ 
